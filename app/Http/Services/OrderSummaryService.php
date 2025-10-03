@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderSummaryService
 {
-    public function generate()
+    static function generate()
     {
         DB::transaction(function () {
             DB::statement('

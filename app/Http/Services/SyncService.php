@@ -7,9 +7,17 @@ use GuzzleHttp\Client as HttpClient;
 
 class SyncService
 {
+  private $http;
+
+  public function __construct()
+  {
+    $this->http = new HttpClient();
+  }
+
   static function fetchClients($page = 1, $perPage = 100, $startDate = '2024-01-01')
   {
-    $response = (new HttpClient())->request('GET', config('services.co_api.base_url') . '/clients', [
+    $instance = new self();
+    $response = $instance->http->request('GET', config('services.co_api.base_url') . '/clients', [
       'headers' => [
         'Authorization' => 'Bearer ' . config('services.co_api.api_key'),
       ],
@@ -25,7 +33,8 @@ class SyncService
 
   static function fetchClientOrders($clientCode, $page = 1, $perPage = 100, $startDate = '2024-01-01')
   {
-    $response = (new HttpClient())->request('GET', config('services.co_api.base_url') . '/clients/' . $clientCode . '/orders', [
+    $instance = new self();
+    $response = $instance->http->request('GET', config('services.co_api.base_url') . '/clients/' . $clientCode . '/orders', [
       'headers' => [
         'Authorization' => 'Bearer ' . config('services.co_api.api_key'),
       ],

@@ -6,17 +6,10 @@ use App\Http\Services\CategoryService;
 
 class CategoriesController
 {
-    private $categoryService;
-
-    public function __construct(CategoryService $categoryService)
-    {
-        $this->categoryService = $categoryService;
-    }
-
     public function listCategories()
     {
         try {
-            $categories = $this->categoryService->listCategories();
+            $categories = CategoryService::listCategories();
 
             return response()->json(['data' => $categories]);
         } catch (\Exception $e) {

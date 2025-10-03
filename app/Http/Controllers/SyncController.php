@@ -7,13 +7,6 @@ use App\Http\Services\SyncService;
 
 class SyncController
 {
-    private $orderSummaryService;
-
-    public function __construct(OrderSummaryService $orderSummaryService)
-    {
-        $this->orderSummaryService = $orderSummaryService;
-    }
-
     public function syncClients()
     {
         try {
@@ -28,7 +21,7 @@ class SyncController
     public function generateClientOrderSummary()
     {
         try {
-            $this->orderSummaryService->generate();
+            OrderSummaryService::generate();
 
             return response()->json(['message' => 'Client order summary generated successfully']);
         } catch (\Exception $e) {

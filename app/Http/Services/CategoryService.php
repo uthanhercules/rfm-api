@@ -20,6 +20,7 @@ class CategoryService
 
   static function validateCategoryCode($categoryCode)
   {
-    return in_array($categoryCode, (new self())->ALL_CATEGORIES);
+    $instance = new self();
+    return in_array($categoryCode, $instance->ALL_CATEGORIES);
   }
 }

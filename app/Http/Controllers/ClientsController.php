@@ -11,8 +11,10 @@ class ClientsController
     {
         try {
             $categoryCode = strtoupper($categoryCode);
-            if (!CategoryService::validateCategoryCode($categoryCode)) {
-                abort(400, 'Invalid category code. Valid codes are: ' . implode(', ', CategoryService::listCategories()->pluck('code')->toArray()));
+            $isCategoryCodeValid = CategoryService::validateCategoryCode($categoryCode);
+
+            if (!$isCategoryCodeValid) {
+                abort(400, 'Invalid category code.');
             }
 
             $toCount = request('to_count') === 'true' ? true : false;

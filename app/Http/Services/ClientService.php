@@ -2,20 +2,11 @@
 
 namespace App\Http\Services;
 
-use GuzzleHttp\Client as HttpClient;
 use App\Models\clientOrderSummary;
 use App\Http\Services\CategoryService;
 
 class ClientService
 {
-    protected $http;
-
-
-    public function __construct()
-    {
-        $this->http = new HttpClient();
-    }
-
     static function getClientByCategory($categoryCode, $toCount = false)
     {
         list($recencyInterval, $frequencyMonetaryInterval) = self::getRecencyFrequencyMonetaryIntervals($categoryCode);
