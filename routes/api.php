@@ -1,0 +1,26 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' => 'api'], function () {
+  Route::group(['prefix' => 'sync'], function () {
+    Route::post('/clients', [App\Http\Controllers\SyncController::class, 'syncClients']);
+    Route::post('/orders', [App\Http\Controllers\SyncController::class, 'syncOrders']);
+  });
+
+  Route::group(['prefix' => 'clients'], function () {
+    Route::get('/categories', [App\Http\Controllers\ClientsController::class, 'countClientsGroupedByCategory']);
+    Route::get('/categories/{category_code}', [App\Http\Controllers\ClientsController::class, 'getClientByCategory']);
+  });
+
+  Route::get('/categories', [App\Http\Controllers\CategoriesController::class, 'listCategories']);
+
+  Route::group(['prefix' => 'summary'], function () {
+    Route::post('/generate', [App\Http\Controllers\SyncController::class, 'generateClientOrderSummary']);
+  });
+
+  // Tests
+  Route::get('/', function () {
+    return response()->json(['message' => 'Pong!']);
+  });
+});
