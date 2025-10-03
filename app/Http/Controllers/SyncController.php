@@ -17,20 +17,9 @@ class SyncController
     public function syncClients()
     {
         try {
-            $clients = SyncService::syncClients('2024-01-01');
+            $clients = SyncService::syncClients();
 
-            return response()->json(['message' => 'Clients synced successfully', 'data' => $clients]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        }
-    }
-
-    public function syncOrders($clientCode = null)
-    {
-        try {
-            $orders = SyncService::syncOrders($clientCode, '2024-01-01');
-
-            return response()->json(['data' => $orders]);
+            return response()->json(['message' => 'Client sync initiated', 'data' => $clients]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
         }
