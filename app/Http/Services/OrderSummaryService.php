@@ -51,4 +51,13 @@ class OrderSummaryService
             ');
         });
     }
+
+    static function getMostRecentOrderDate()
+    {
+        $result = DB::table('orders')
+            ->select(DB::raw('MAX(created_at) as most_recent_order_date'))
+            ->first();
+
+        return $result ? $result->most_recent_order_date : null;
+    }
 }

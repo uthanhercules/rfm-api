@@ -56,4 +56,15 @@ class SyncService
 
     SyncClientsJob::dispatch(1, $startDate)->onQueue('clients_sync');
   }
+
+  static function syncRecentClients()
+  {
+    $startDate = OrderSummaryService::getMostRecentOrderDate();
+
+    if (!$startDate) {
+      abort(500, 'Cannot determine the most recent order date.');
+    }
+
+    self::syncClients($startDate);
+  }
 }

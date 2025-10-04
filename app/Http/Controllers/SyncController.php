@@ -29,4 +29,15 @@ class SyncController
             return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
         }
     }
+
+    public function syncRecentClients()
+    {
+        try {
+            SyncService::syncRecentClients();
+
+            return response()->json(['message' => 'Recent client sync initiated']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
+        }
+    }
 }
