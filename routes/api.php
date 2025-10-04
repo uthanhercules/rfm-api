@@ -20,7 +20,7 @@ Route::group(['prefix' => 'api'], function () {
   });
 
   // Tests
-  Route::get('/', function () {
+  Route::get('/ping', function () {
     return response()->json(['message' => 'Pong!']);
   });
 });

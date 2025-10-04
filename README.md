@@ -1,61 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Rodando pela primeira vez
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+O projeto possui poucas tabelas, mas uma delas precisa de um seed. Para isso, foi criado um script que executa tudo o que é necessário para rodar a API sem problemas, precisando apenas sincronizar os dados.
 
-## About Laravel
+## Passo a passo
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. **Clone o repositório:**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+git clone git@github.com:uthanhercules/rfm-api.git
+cd rfm-api
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. **Execute o setup inicial:**
 
-## Learning Laravel
+```bash
+npm run setup
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Esse comando irá:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Instalar os pacotes necessários;
+- Rodar as migrations e criar o banco de dados;
+- Preparar o ambiente para uso.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+> **Importante:** Antes de rodar o setup, **crie e configure seu banco de dados no arquivo `.env`**.
 
-## Laravel Sponsors
+3. **Rode o projeto:**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+npm run start
+```
+---
 
-### Premium Partners
+## Sincronizando os dados
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Após configurar e criar seu banco, chegou a hora de sincronizar os dados.
 
-## Contributing
+Execute a seguinte rota:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```http
+POST /sync/clients?start_date=1970-01-01
+```
 
-## Code of Conduct
+- O parâmetro `start_date` (formato YYYY-MM-DD) define a data de corte para a sincronização de **clientes** e também de **pedidos**.
+- Os dados serão buscados na API externa configurada na chave `CO_API_BASE_URL` do seu arquivo `.env`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+> A sincronização é feita por meio de *jobs*. Portanto, **é necessário configurar o sistema de filas antes de sincronizar os dados**.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Gerando a tabela de referência
 
-## License
+Após a sincronização, gere a tabela de referência executando:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```http
+POST /summary/generate
+```
+
+Essa rota gera rapidamente a tabela usada como base analítica. Em produção, ela será executada via cron.
+
+---
+
+## Rotas disponíveis
+
+- `GET /categories/`  
+  Retorna um array de objetos com as categorias dos clientes e seus respectivos códigos.
+
+- `GET /clients/categories`  
+  Retorna a contagem de clientes em cada categoria.
+
+- `GET /clients/categories/:category_code`  
+  Retorna todos os clientes de uma categoria específica.  
+  (Use a rota `/categories` para obter os códigos disponíveis.)
+
+- `GET /ping`  
+  Rota simples para verificar se a API está respondendo corretamente.
+
+---
+
+Com isso, a API estará pronta para uso e exploração =)
