@@ -41,7 +41,7 @@ class SyncService
       'query' => [
         'perPage' => $perPage,
         'page' => $page,
-        'filters[dateLastOrderStart]' => $startDate,
+        'filters[startDate]' => $startDate,
       ]
     ]);
 
