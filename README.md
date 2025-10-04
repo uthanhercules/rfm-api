@@ -30,6 +30,7 @@ Esse comando irá:
 ```bash
 npm run start
 ```
+
 ---
 
 ## Sincronizando os dados
@@ -45,7 +46,7 @@ POST /sync/clients?start_date=1970-01-01
 - O parâmetro `start_date` (formato YYYY-MM-DD) define a data de corte para a sincronização de **clientes** e também de **pedidos**.
 - Os dados serão buscados na API externa configurada na chave `CO_API_BASE_URL` do seu arquivo `.env`.
 
-> A sincronização é feita por meio de *jobs*. Portanto, **é necessário configurar o sistema de filas antes de sincronizar os dados**.
+> A sincronização é feita por meio de _jobs_. Portanto, **é necessário configurar o sistema de filas antes de sincronizar os dados**.
 
 ---
 
