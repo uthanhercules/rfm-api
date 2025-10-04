@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'api'], function () {
   Route::group(['prefix' => 'sync'], function () {
     Route::post('/clients', [App\Http\Controllers\SyncController::class, 'syncClients']);
+    Route::post('/clients/recent', [App\Http\Controllers\SyncController::class, 'syncRecentClients']);
   });
 
   Route::group(['prefix' => 'clients'], function () {
