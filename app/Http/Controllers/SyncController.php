@@ -10,7 +10,8 @@ class SyncController
     public function syncClients()
     {
         try {
-            $clients = SyncService::syncClients();
+            $startDate = request()->input('start_date');
+            $clients = SyncService::syncClients($startDate);
 
             return response()->json(['message' => 'Client sync initiated', 'data' => $clients]);
         } catch (\Exception $e) {

@@ -41,12 +41,18 @@ class SyncClientsJob implements ShouldQueue
 
         clients::upsert($clients, ['code'], ['name']);
 
-        foreach (clients::pluck('code')->toArray() as $clientCode) {
-            SyncOrdersJob::dispatch($clientCode, 1, $this->startDate)->onQueue('orders_sync');
-        }
-
         if ($this->page < $lastPage) {
             SyncClientsJob::dispatch($this->page + 1, $this->startDate)->onQueue('clients_sync');
+        }
+
+        if ($this->page === $lastPage) {
+            echo "Sincronização de clientes concluída.\n";
+
+            $allClients = clients::all();
+
+            foreach ($allClients as $client) {
+                SyncOrdersJob::dispatch($client->code, 1, $this->startDate)->onQueue('orders_sync');
+            }
         }
     }
 
